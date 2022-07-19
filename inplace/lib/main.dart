@@ -12,7 +12,105 @@ class InPlace extends StatelessWidget {
   @override
   // This widget is the root of your application.
   Widget build(BuildContext context) {
+    // in the MaterialApp() must be added the widgets created in the build() in order to show them in the GUI
+    return MaterialApp(
+      title: 'inPlace Messaging App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const Hermes(),
+    ); // MaterialApp
+  } // build
+
+} // class InPlace
+
+// MsgList stateful widget, to create the infinite message box
+class MsgList extends StatefulWidget {
+  const MsgList({super.key});
+
+  @override
+  State<MsgList> createState() => _MsgList();
+}
+
+class _MsgList extends State<MsgList> {
+  final suggestions = <WordPair>[];
+  final biggerFont = TextStyle(fontSize: 18);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        if (i.isOdd) return const Divider();
+
+        final index = i ~/ 2;
+        if (index >= suggestions.length) {
+          suggestions.addAll(generateWordPairs().take(10));
+        }
+        return ListTile(
+          title: Text(
+            suggestions[index].asPascalCase,
+            style: biggerFont,
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Central class where the home resides
+class Hermes extends StatefulWidget {
+  const Hermes({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _HermesState();
+}
+
+class _HermesState extends State<Hermes> {
+  @override
+  Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
+
+    // This regulates the pressing of the menu icon: opens a new page in the app
+    void _gotoSettings() {
+      Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Settings'),
+          ),
+          body: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(32),
+                child: const Text('PUT HERE THE SETTINGS MENU'),
+              ),
+            ],
+          ),
+        );
+      }));
+    }
+
+    // Function to automatically generate a colon containing a button
+    Column _buildButtonColumn(Color color, IconData icon, String label) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: color),
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: color,
+              ),
+            ), // Text
+          ), // Container
+        ], // children
+      ); // return Column
+    } // _buildButtonColumn
 
     // Map Section, where the map should be placed inside the homepage of the application
     Widget mapSection = Container(
@@ -64,83 +162,24 @@ class InPlace extends StatelessWidget {
       ), // Column containing the messages
     ); // Container
 
-    // in the MaterialApp() must be added the widgets created in the build() in order to show them in the GUI
-    return MaterialApp(
-      title: 'inPlace Messaging App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ), //ThemeData - To determine the theme of the application
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('inPlace'),
-        ), // AppBar - where the title of the app is present
-        body: ListView(
-          children: [
-            mapSection, // Show the map here
-            btnSection, // Show the buttons for new message and refresh messages here
-            msgSection, // Show the messages in a place here
-          ], // Children: all the widgets that are inserted in the homepage
-        ), // ListView
-      ), // Scaffold
-    ); // MaterialApp
-  } // build
-
-  // Function to automatically generate a colon containing a button
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ), // Text
-        ), // Container
-      ], // children
-    ); // return Column
-  } // _buildButtonColumn
-
-} // class InPlace
-
-// MsgList stateful widget, to create the infinite message box
-class MsgList extends StatefulWidget {
-  const MsgList({super.key});
-
-  @override
-  State<MsgList> createState() => _MsgList();
-}
-
-class _MsgList extends State<MsgList> {
-  final suggestions = <WordPair>[];
-  final biggerFont = TextStyle(fontSize: 18);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if (i.isOdd) return const Divider();
-
-        final index = i ~/ 2;
-        if (index >= suggestions.length) {
-          suggestions.addAll(generateWordPairs().take(10));
-        }
-        return ListTile(
-          title: Text(
-            suggestions[index].asPascalCase,
-            style: biggerFont,
-          ),
-        );
-      },
-    );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('inPlace'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: _gotoSettings,
+            tooltip: 'Menu',
+          ) // Icon for settings
+        ],
+      ), // AppBar - where the title of the app is present
+      body: ListView(
+        children: [
+          mapSection, // Show the map here
+          btnSection, // Show the buttons for new message and refresh messages here
+          msgSection, // Show the messages in a place here
+        ], // Children: all the widgets that are inserted in the homepage
+      ), // ListView
+    ); // Scaffold
   }
 }
