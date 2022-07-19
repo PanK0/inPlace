@@ -1,6 +1,6 @@
 import 'package:english_words/english_words.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 void main() {
   runApp(const InPlace());
@@ -35,38 +35,39 @@ class InPlace extends StatelessWidget {
             ),
           ),
         ],
-      ), // Row 1, that contains the map
+      ), // Row that contains the map
     ); // mapSection
 
-    // Messages Section, where the messages should appear
-    final wordPair = WordPair.random();
-
-    Widget msgSection = Container(
+    // Button Section, where the buttons should appear
+    Widget btnSection = Container(
       padding: const EdgeInsets.all(0),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildButtonColumn(
-                    color, Icons.add_circle_outline, 'NEW MESSAGE'),
-                _buildButtonColumn(color, Icons.refresh, '  REFRESH  '),
-              ],
-            ), // Row 2.1.1 for the buttons
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(wordPair.asPascalCase),
-                ),
-              ],
-            ), // Row 2.1.2 for the messages
-          ] // children of the Column: should be the two rows, one for the buttons and one for the messages
-          ), // Column 2.1 inside which there will be two rows: one for the message buttons and one for the messages
-    ); // msgSection Container 2
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildButtonColumn(
+                  color, Icons.add_circle_outline, 'NEW MESSAGE'),
+              _buildButtonColumn(color, Icons.refresh, '  REFRESH  '),
+            ],
+          ), // Row for the buttons
+        ], // children of the Column
+      ), // Column inside which there is the row for the buttons
+    ); // btnSection Container
+
+    // Messages Section
+    Widget msgSection = Container(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          SizedBox(height: 400, child: MsgList()),
+        ], // Children of the column, containing the widget that show the messages
+      ), // Column containing the messages
+    ); // Container
 
     // in the MaterialApp() must be added the widgets created in the build() in order to show them in the GUI
     return MaterialApp(
@@ -80,10 +81,11 @@ class InPlace extends StatelessWidget {
         ), // AppBar - where the title of the app is present
         body: ListView(
           children: [
-            mapSection,
-            msgSection,
+            mapSection, // Show the map here
+            btnSection, // Show the buttons for new message and refresh messages here
+            msgSection, // Show the messages in a place here
           ], // Children: all the widgets that are inserted in the homepage
-        ), // Center
+        ), // ListView
       ), // Scaffold
     ); // MaterialApp
   } // build
@@ -110,41 +112,40 @@ class InPlace extends StatelessWidget {
     ); // return Column
   } // _buildButtonColumn
 
-  Container _buildMsgList() {
-    final suggestions = <WordPair>[];
-    const biggerFont = TextStyle(fontSize: 18);
+} // class InPlace
 
-    return Container(
-      padding: const EdgeInsets.only(top: 16),
-      child: const Text('BANANA'),
+// MsgList stateful widget, to create the infinite message box
+class MsgList extends StatefulWidget {
+  const MsgList({super.key});
+
+  @override
+  State<MsgList> createState() => _MsgList();
+}
+
+class _MsgList extends State<MsgList> {
+  final suggestions = <WordPair>[];
+  final biggerFont = TextStyle(fontSize: 18);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        if (i.isOdd) return const Divider();
+
+        final index = i ~/ 2;
+        if (index >= suggestions.length) {
+          suggestions.addAll(generateWordPairs().take(10));
+        }
+        return ListTile(
+          title: Text(
+            suggestions[index].asPascalCase,
+            style: biggerFont,
+          ),
+        );
+      },
     );
   }
-
-  // THIS DOESN'T WORK
-  randomMessages() {
-    final suggestions = <WordPair>[];
-    const biggerFont = TextStyle(fontSize: 18);
-
-    @override
-    Widget build(BuildContext context) {
-      return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          if (i.isOdd) return const Divider();
-
-          final index = i ~/ 2;
-          if (index >= suggestions.length) {
-            suggestions.addAll(generateWordPairs().take(10));
-          }
-          return ListTile(
-            title: Text(
-              suggestions[index].asPascalCase,
-              style: biggerFont,
-            ),
-          );
-        },
-      );
-    }
-  } // randomMessages()
-
 }
