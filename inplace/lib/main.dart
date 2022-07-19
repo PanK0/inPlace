@@ -41,20 +41,15 @@ class InPlace extends StatelessWidget {
     // Button Section, where the buttons should appear
     Widget btnSection = Container(
       padding: const EdgeInsets.all(0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildButtonColumn(
-                  color, Icons.add_circle_outline, 'NEW MESSAGE'),
-              _buildButtonColumn(color, Icons.refresh, '  REFRESH  '),
-            ],
-          ), // Row for the buttons
-        ], // children of the Column
-      ), // Column inside which there is the row for the buttons
+          _buildButtonColumn(color, Icons.add_circle_outline, 'NEW MESSAGE'),
+          _buildButtonColumn(color, Icons.refresh, '  REFRESH  '),
+        ],
+      ), // Row for the buttons
+      // children of the Column
+      // Column inside which there is the row for the buttons
     ); // btnSection Container
 
     // Messages Section
