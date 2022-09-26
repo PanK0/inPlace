@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inplace/widgets/maps_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/applicationState.dart';
@@ -17,7 +18,8 @@ class HomePage extends StatelessWidget {
       appBar: buildAppBar(context),
       body: ListView(
         children: <Widget>[
-          Image.asset('assets/map.png'),
+          //Image.asset('assets/map.png'),
+          mapSection,
           const SizedBox(height: 8),
           const IconAndDetail(Icons.calendar_today, 'October 30'),
           const IconAndDetail(Icons.location_city, 'San Francisco'),
