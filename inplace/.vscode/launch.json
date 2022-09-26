@@ -5,12 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "inplace (DEBUG MODE)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "debug"
-        },
-        {
             "name": "inplace",
             "request": "launch",
             "type": "dart"

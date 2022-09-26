@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "9296122063",
+    "project_id": "inplace-f3020",
+    "storage_bucket": "inplace-f3020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9296122063:android:97e36c6933ea8744faa7ba",
+        "android_client_info": {
+          "package_name": "com.example.inplace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9296122063-6nb7if3u7k8v8bs4tsnqq3apu5213nrc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIL4qoramkFdroSEXbChoLdt6WVv6uQqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9296122063-6nb7if3u7k8v8bs4tsnqq3apu5213nrc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
