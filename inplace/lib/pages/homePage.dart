@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inplace/widgets/maps_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/applicationState.dart';
 import '../utils/authentication.dart';
 import '../widgets/appbar.dart';
+import '../widgets/geolocation.dart';
 import '../widgets/guestbook.dart';
 import '../widgets/widgets.dart';
 
@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           //Image.asset('assets/map.png'),
-          mapSection,
+          const Geoloc(),
           const SizedBox(height: 8),
           const IconAndDetail(Icons.calendar_today, 'October 30'),
           const IconAndDetail(Icons.location_city, 'San Francisco'),
