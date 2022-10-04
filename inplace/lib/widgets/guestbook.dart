@@ -33,6 +33,8 @@ class _GuestBookState extends State<GuestBook> {
             key: _formKey,
             child: Row(
               children: [
+                // Leave a message in the guestbook
+                // Fields of the message are regulated in applicationState.dart file
                 Expanded(
                   child: TextFormField(
                     controller: _controller,

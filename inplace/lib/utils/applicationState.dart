@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../firebase_options.dart';
 import 'guestbookMessage.dart';
@@ -14,6 +15,46 @@ class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
+
+  /* 
+    START GPS Stuff
+  */
+  double lat = 0, long = 0;
+
+  void getGPSCoordinates() async {
+    bool servicestatus = await Geolocator.isLocationServiceEnabled();
+
+    if (servicestatus) {
+      print("GPS service is enabled");
+    } else {
+      print("GPS service is disabled.");
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print('Location permissions are denied');
+      } else if (permission == LocationPermission.deniedForever) {
+        print("'Location permissions are permanently denied");
+      } else {
+        print("GPS Location service is granted");
+      }
+    } else {
+      print("GPS Location permission granted.");
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    long = position.longitude;
+    lat = position.latitude;
+  }
+
+  /* 
+  END GPS Stuff
+  */
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
@@ -68,6 +109,12 @@ class ApplicationState extends ChangeNotifier {
     if (!_loggedIn) {
       throw Exception('Must be logged in');
     }
+    getGPSCoordinates();
+    if (lat == 0 || long == 0) {
+      Timer(const Duration(seconds: 5), () {
+        print("This code executes after 5 seconds");
+      });
+    }
 
     return FirebaseFirestore.instance
         .collection('guestbook')
@@ -76,6 +123,8 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
+      'lat': lat.toString(),
+      'lng': long.toString(),
     });
   }
 }
