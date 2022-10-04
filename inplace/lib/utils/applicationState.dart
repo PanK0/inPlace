@@ -21,7 +21,7 @@ class ApplicationState extends ChangeNotifier {
   */
   double lat = 0, long = 0;
 
-  void getGPSCoordinates() async {
+  Future<void> getGPSCoordinates() async {
     bool servicestatus = await Geolocator.isLocationServiceEnabled();
 
     if (servicestatus) {
@@ -105,15 +105,13 @@ class ApplicationState extends ChangeNotifier {
     });
   }
 
-  Future<DocumentReference> addMessageToGuestBook(String message) {
+  Future<DocumentReference> addMessageToGuestBook(String message) async {
     if (!_loggedIn) {
       throw Exception('Must be logged in');
     }
-    getGPSCoordinates();
+
     if (lat == 0 || long == 0) {
-      Timer(const Duration(seconds: 5), () {
-        print("This code executes after 5 seconds");
-      });
+      await getGPSCoordinates();
     }
 
     return FirebaseFirestore.instance
