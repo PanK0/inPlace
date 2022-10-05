@@ -21,8 +21,8 @@ class HomePage extends StatelessWidget {
           //Image.asset('assets/map.png'),
           const Geoloc(),
           const SizedBox(height: 8),
-          const IconAndDetail(Icons.calendar_today, 'October 30'),
-          const IconAndDetail(Icons.location_city, 'San Francisco'),
+          //const IconAndDetail(Icons.calendar_today, 'October 30'),
+          //const IconAndDetail(Icons.location_city, 'San Francisco'),
           // Authentication module
           Consumer<ApplicationState>(
             builder: (context, appState, _) => AuthFunc(
@@ -39,16 +39,16 @@ class HomePage extends StatelessWidget {
             endIndent: 8,
             color: Colors.grey,
           ),
-          const Header("What we'll be doing"),
+          const Header("Messages in this area"),
           const Paragraph(
-            'Join us for a day full of Firebase Workshops and Pizza!',
+            'All messages in an area of two squared kilometers from your position',
           ),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (appState.loggedIn) ...[
-                  const Header('Discussion'),
+                  //const Header('Discussion'),
                   // Guestbook here to add and read messages
                   GuestBook(
                     addMessage: (message) =>
