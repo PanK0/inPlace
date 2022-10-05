@@ -20,6 +20,7 @@ class ApplicationState extends ChangeNotifier {
     START GPS Stuff
   */
   double lat = 0, long = 0;
+  double fixed_distance = 0.01; // in terms of coordinates, 0.01 is equal to 1km
 
   Future<void> getGPSCoordinates() async {
     bool servicestatus = await Geolocator.isLocationServiceEnabled();
@@ -50,6 +51,23 @@ class ApplicationState extends ChangeNotifier {
 
     long = position.longitude;
     lat = position.latitude;
+  }
+
+  // Function to check wether a pair of coordinate is in a specific range
+  // since we have a range of 2*fixed_distance and fixed_distance = 0.01 and 0.01 is equal to 1km,
+  // here are loaded all messages in an area of 2km^2 form the user.
+  bool checkCoords(GeoPoint geoPoint) {
+    double mlat = geoPoint.latitude;
+    double mlon = geoPoint.longitude;
+
+    if (mlat > lat - fixed_distance &&
+        mlat < lat + fixed_distance &&
+        mlon > long - fixed_distance &&
+        mlon < long + fixed_distance) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /* 
@@ -84,15 +102,19 @@ class ApplicationState extends ChangeNotifier {
             .collection('guestbook')
             .orderBy('timestamp', descending: true)
             .snapshots()
-            .listen((snapshot) {
+            .listen((snapshot) async {
           _guestBookMessages = [];
+          await getGPSCoordinates();
           for (final document in snapshot.docs) {
-            _guestBookMessages.add(
-              GuestBookMessage(
-                name: document.data()['name'] as String,
-                message: document.data()['text'] as String,
-              ),
-            );
+            bool pass = checkCoords(document.data()['geotag']);
+            if (pass) {
+              _guestBookMessages.add(
+                GuestBookMessage(
+                  name: document.data()['name'] as String,
+                  message: document.data()['text'] as String,
+                ),
+              );
+            }
           }
           notifyListeners();
         });
@@ -121,8 +143,8 @@ class ApplicationState extends ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
-      'lat': lat.toString(),
-      'lng': long.toString(),
+      'geotag': GeoPoint(lat,
+          long), // Save a GeoPoint. To access coordinates call i.e. geopoint.latitude, geopoint.longitude
     });
   }
 }
