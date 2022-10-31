@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "inplace-f3020",
+  "private_key_id": "e72397183d87bf5658745a46238b7c5e8d0d1054",
+  "private_key": "INSERT YOUR PRIVATE KEY HERE",
+  "client_email": "firebase-adminsdk-xegfw@inplace-f3020.iam.gserviceaccount.com",
+  "client_id": "117890209743180869709",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xegfw%40inplace-f3020.iam.gserviceaccount.com"
+}
