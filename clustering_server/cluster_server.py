@@ -3,8 +3,6 @@
     calculate the k clusters and upload the cluster centers in the "clusters" collection of the database
 '''
 
-from audioop import avg
-from distutils.command.config import config
 import firebase_admin
 import networkx as nx
 from firebase_admin import credentials, firestore
@@ -137,7 +135,3 @@ for c in cluster_centers :
     geopoint = firestore.GeoPoint(c[0].latitude, c[0].longitude)
     ts = time.time()
     clusters_collection.add({'geotag': geopoint, 'avg_radius': c[1], 'timestamp': ts})
-
-
-
-
