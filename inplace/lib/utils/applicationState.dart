@@ -11,6 +11,8 @@ import 'package:geolocator/geolocator.dart';
 import '../firebase_options.dart';
 import 'guestbookMessage.dart';
 
+import 'clustersList.dart';
+
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
@@ -77,9 +79,16 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
+  // To add messages taken from the database to the guestbook
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+
+  // To add clusters taken from the database
+  StreamSubscription<QuerySnapshot>? _clustersSubscription;
+  List<ClustersList> _clustersLists = [];
+  List<ClustersList> get clustersLists => _clustersLists;
+  String banana = '0';
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -98,6 +107,29 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
+        /*
+          Retrieve the clusters
+        */
+        _clustersSubscription = FirebaseFirestore.instance
+            .collection('clusters')
+            .orderBy('timestamp', descending: true)
+            .snapshots()
+            .listen((snaps) async {
+          _clustersLists = [];
+          for (final document in snaps.docs) {
+            var cl = ClustersList(
+                lat: (document.data()['geotag'].latitude).toString(),
+                lng: (document.data()['geotag'].longitude).toString(),
+                avg_radius: (document.data()['avg_radius']).toString());
+            //banana = document.data()['avg_radius'].toString();
+            _clustersLists.add(cl);
+          }
+          notifyListeners();
+        });
+
+        /*
+          Retrieve the messages
+        */
         _guestBookSubscription = FirebaseFirestore.instance
             .collection('guestbook')
             .orderBy('timestamp', descending: true)
@@ -106,6 +138,7 @@ class ApplicationState extends ChangeNotifier {
           _guestBookMessages = [];
           await getGPSCoordinates();
           for (final document in snapshot.docs) {
+            // Here we only show the messages in a fixed range of distance
             bool pass = checkCoords(document.data()['geotag']);
             if (pass) {
               _guestBookMessages.add(
@@ -122,6 +155,8 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _guestBookMessages = [];
         _guestBookSubscription?.cancel();
+        _clustersLists = [];
+        _clustersSubscription?.cancel();
       }
       notifyListeners();
     });

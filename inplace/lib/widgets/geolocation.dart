@@ -128,9 +128,9 @@ class _GeolocState extends State<Geoloc> {
     }
     return Container(
       padding: const EdgeInsets.all(16),
-      child: SizedBox(
+      child: const SizedBox(
         height: 30,
-        child: Text("LatLng: $center", style: TextStyle(fontSize: 20)),
+        child: Text("Waiting for the map"),
       ),
     );
   }

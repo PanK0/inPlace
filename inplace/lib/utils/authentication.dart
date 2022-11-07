@@ -49,7 +49,16 @@ class AuthFunc extends StatelessWidget {
                       Navigator.of(context).pushNamed('/profile');
                     },
                     child: const Text('Profile')),
-              ))
+              )),
+          // Clusters button
+          Padding(
+              padding: const EdgeInsets.only(left: 24, bottom: 8),
+              child: StyledButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/clusters');
+                },
+                child: const Text('Clusters'),
+              )),
         ],
       )
     ]);

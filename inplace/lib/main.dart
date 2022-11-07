@@ -1,6 +1,7 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:inplace/pages/clusterPage.dart';
 import 'package:inplace/pages/homePage.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,10 @@ class App extends StatelessWidget {
           // Home Page class, pages/homePage.dart
           '/home': (context) {
             return const HomePage();
+          },
+          // Clusters Page class, pages/clusterPage.dart
+          '/clusters': (context) {
+            return const ClusterPage();
           },
           // sign-in screen, package:firebase_ui_auth/src/screens/sign_in_screen.dart
           '/sign-in': ((context) {
