@@ -21,11 +21,32 @@ class ClusterPage extends StatelessWidget {
           const Paragraph(
             'Clusters in the world',
           ),
+          const Divider(
+            color: Colors.black,
+          ),
           Consumer<ApplicationState>(
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Cluster list
                 Clusters(clst: appState.clustersLists),
+                // About you section
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Divider(
+                    height: 8,
+                    thickness: 1,
+                    indent: 8,
+                    endIndent: 8,
+                    color: Colors.grey,
+                  ),
+                  const Header("About you"),
+                  Paragraph(
+                    "Your latitude: ${appState.lat}\nYour longitude: ${appState.long}",
+                  ),
+                  const SizedBox(height: 8),
+                  Paragraph(
+                      "Distance to the nearest cluster is ${appState.nearest_cluster.toStringAsFixed(2)}")
+                ]),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:inplace/utils/applicationState.dart';
 
 import 'package:flutter/material.dart';
 import '../utils/clustersList.dart';
@@ -25,7 +26,7 @@ class _ClustersState extends State<Clusters> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 8),
-        if (widget.clst.isEmpty) const Text('List is empty'),
+        if (widget.clst.isEmpty) const Text('No clusters available'),
         for (var clu in widget.clst)
           Paragraph(
             'Latitude: ${clu.lat},\nLongitude: ${clu.lng},\nAverage Radius: ${clu.avg_radius}',

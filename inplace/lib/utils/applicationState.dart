@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -72,6 +74,32 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
+  // Function to calculate the distance between two points A and B Earth.
+  // Result is expressed in KM
+  double get_distance(double lat_a, double lng_a, double lat_b, double lng_b) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat_b - lat_a) * p) / 2 +
+        c(lat_a * p) * c(lat_b * p) * (1 - c((lng_b - lng_a) * p)) / 2;
+    return (12742 * asin(sqrt(a)));
+  }
+
+  // Function to calculate the nearest cluster to point A
+  double get_nearest_cluster(
+      double lat_a, double lng_a, List<ClustersList> clusters) {
+    var min_distance = 12742.0;
+
+    for (int i = 0; i < clusters.length; i++) {
+      var dist = get_distance(lat_a, lng_a, double.parse(clusters[i].lat),
+          double.parse(clusters[i].lng));
+      if (dist < min_distance) {
+        min_distance = dist;
+      }
+    }
+    return min_distance;
+  }
+
   /* 
   END GPS Stuff
   */
@@ -89,6 +117,7 @@ class ApplicationState extends ChangeNotifier {
   List<ClustersList> _clustersLists = [];
   List<ClustersList> get clustersLists => _clustersLists;
   String banana = '0';
+  double nearest_cluster = -1.0;
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -149,6 +178,7 @@ class ApplicationState extends ChangeNotifier {
               );
             }
           }
+          nearest_cluster = get_nearest_cluster(lat, long, _clustersLists);
           notifyListeners();
         });
       } else {
