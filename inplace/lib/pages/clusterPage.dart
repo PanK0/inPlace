@@ -7,6 +7,7 @@ import '../widgets/appbar.dart';
 import '../widgets/clusters.dart';
 import '../utils/applicationState.dart';
 import '../widgets/widgets.dart';
+import '../widgets/gyro.dart';
 
 class ClusterPage extends StatelessWidget {
   const ClusterPage({super.key});
@@ -45,8 +46,19 @@ class ClusterPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Paragraph(
-                      "Distance to the nearest cluster is ${appState.nearest_cluster.toStringAsFixed(2)}")
+                      "Distance to the nearest cluster is ${appState.nearest_cluster.toStringAsFixed(2)} km"),
                 ]),
+                const Divider(
+                  height: 8,
+                  thickness: 1,
+                  indent: 8,
+                  endIndent: 8,
+                  color: Colors.grey,
+                ),
+                const Paragraph(
+                  "GYROSCOPE INFORMATION:",
+                ),
+                Gyro(),
               ],
             ),
           ),
