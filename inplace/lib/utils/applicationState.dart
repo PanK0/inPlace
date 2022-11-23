@@ -15,8 +15,6 @@ import 'guestbookMessage.dart';
 
 import 'clustersList.dart';
 
-import 'package:sensors_plus/sensors_plus.dart';
-
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
