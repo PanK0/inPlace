@@ -24,20 +24,14 @@ Search for 'YOUR_API_KEY' in files:
 
 And replace the key
 
-## clustering_server/
+## pythonanywhere_server/
 
-This module has to be run on a server. 
+This module has to be run on a pythonanywhere. 
+
+I uploaded it as a WebApp in the path *home/{user_name}/inPlace*.
 
 Here the messages in the database are retrieved with their GPS coordinates, then k clusters are computed and their centers are uploaded on firestore.
 
-- clustering_server/
+After this, a rudimental API service is set up in order to give back the clusters to someone who asks.
 
-    &emsp;├── cluster_server.py 
-
-    &emsp;├── firebase_inplace_key.json
-    
-    &emsp;├── Point.py
-    
-    &emsp;└── utils.py
-
-In order to communicate with the firestore database, replace YOUR_PRIVATE_KEY in the field of "private key" in file *firebase_inplace_key.json*
+In order to communicate with the firestore database, replace YOUR_PRIVATE_KEY in the field of "private key" in file *models/firebase_inplace_key.json*

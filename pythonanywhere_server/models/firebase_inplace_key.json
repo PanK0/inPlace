@@ -2,7 +2,7 @@
   "type": "service_account",
   "project_id": "inplace-f3020",
   "private_key_id": "e72397183d87bf5658745a46238b7c5e8d0d1054",
-  "private_key": "PRIVATE_KEY",
+  "private_key": "YOUR_PRIVATE_KEY",
   "client_email": "firebase-adminsdk-xegfw@inplace-f3020.iam.gserviceaccount.com",
   "client_id": "117890209743180869709",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
