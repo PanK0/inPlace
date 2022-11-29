@@ -14,6 +14,7 @@ import '../firebase_options.dart';
 import 'guestbookMessage.dart';
 
 import 'clustersList.dart';
+import '../services/clustering_server_api.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -139,6 +140,7 @@ class ApplicationState extends ChangeNotifier {
         /*
           Retrieve the clusters
         */
+        /*
         _clustersSubscription = FirebaseFirestore.instance
             .collection('clusters')
             .orderBy('timestamp', descending: true)
@@ -155,7 +157,7 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
-
+        */
         /*
           Retrieve the messages
         */
@@ -178,6 +180,13 @@ class ApplicationState extends ChangeNotifier {
               );
             }
           }
+
+          /*
+            Retrieve the clusters
+          */
+          _clustersLists = await getClustersFromDB();
+          notifyListeners();
+
           nearest_cluster = get_nearest_cluster(lat, long, _clustersLists);
           notifyListeners();
         });

@@ -32,7 +32,7 @@
             android:value="2" />
         <!-- API KEY For Google Maps in the application -->
          <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY"/>
+            android:value="AIzaSyATX7RCrR2-Y_kDt9yLQwH-MX2xGaF_rIU"/>
     </application>
 
     <!-- For GPS permissions -->	
