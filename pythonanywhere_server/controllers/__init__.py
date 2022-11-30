@@ -1,3 +1,5 @@
+from flask import Blueprint, request
+from models import *
 
 #############################################
 ## USE THIS FILE TO DEFINE ANY Routes
@@ -17,14 +19,17 @@ def home_home():
 @home.get("/clusters")
 def home_clusters():
     # map over array of posts converting to tuple of dictionaries
+    db_connection.ping(reconnect=True)
     cursor.execute('SELECT * FROM cluster')
     rows = cursor.fetchall()
+    db_connection.commit()
     clusters = {}
     dict_attr = ["id", "latitude", "longitude", "avg_radius", "timestamp"]
     for r in rows:
         c = {dict_attr[i] : r[i] for i, _ in enumerate(r)}
         l = c['id']
         clusters[f"{l}"] = c
+    print(f"[*] all clusters were given")
     return clusters
 
 
@@ -35,9 +40,11 @@ def home_cluster_id(id):
     # Retrieve from DATABASE
     cursor.execute('SELECT * FROM cluster')
     rows = cursor.fetchall()
+    db_connection.commit()
     # Convert tuple into a dictionary
     dict_attr = ["id", "latitude", "longitude", "avg_radius", "timestamp"]
     return {dict_attr[i] : (rows[id])[i] for i, _ in enumerate(rows[id])}
+
 
 '''
 # Cluster Create
