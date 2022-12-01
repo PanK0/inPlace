@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +49,9 @@ class ClusterPage extends StatelessWidget {
                     "Your latitude: ${appState.lat}\nYour longitude: ${appState.long}",
                   ),
                   const SizedBox(height: 8),
+                  const Header("Nearest Cluster"),
+                  Paragraph(
+                      'Latitude: ${appState.nearest_lat}\nLongitude: ${appState.nearest_lng}'),
                   Paragraph(
                       "Distance to the nearest cluster is ${appState.nearest_cluster.toStringAsFixed(2)}")
                 ]),
@@ -57,9 +62,10 @@ class ClusterPage extends StatelessWidget {
                   endIndent: 8,
                   color: Colors.grey,
                 ),
+                const Header("Jack's Compass"),
                 Container(
                   margin: const EdgeInsets.all(50.0),
-                  child: _buildCompass(context),
+                  child: _buildCompass(context, appState.theta),
                 ),
               ],
             ),
@@ -69,7 +75,19 @@ class ClusterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCompass(BuildContext context) {
+  /*
+    We want the compass to point from a pair of coords (your position) to another pair (the nearest cluster)
+    According to 
+    @ https://gis.stackexchange.com/questions/228656/finding-compass-direction-between-two-distant-gps-points
+    AND
+    @ http://www.movable-type.co.uk/scripts/latlong.html
+    the formula to use to find the angle of the compass is: 
+    θ = atan2( sin Δλ ⋅ cos φ2 , cos φ1 ⋅ sin φ2 − sin φ1 ⋅ cos φ2 ⋅ cos Δλ )
+    where
+    φ1,λ1 is the start point, φ2,λ2 the end point (Δλ is the difference in longitude)
+  */
+
+  Widget _buildCompass(BuildContext context, theta) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     // might need to accound for padding on iphones
@@ -98,6 +116,14 @@ class ClusterPage extends StatelessWidget {
         }
 
         int ang = (direction.round());
+
+        // const brng = (θ*180/Math.PI + 360) % 360; // in degrees
+        double brng = (theta * 180 / math.pi + 360) % 360;
+        brng = double.parse(brng.toStringAsFixed(2));
+        theta = double.parse(theta.toStringAsFixed(2));
+        double tot = (direction - brng) % 360;
+        tot = double.parse(tot.toStringAsFixed(2));
+
         return Stack(
           children: [
             Container(
@@ -108,19 +134,29 @@ class ClusterPage extends StatelessWidget {
                 color: Color(0xFFEBEBEB),
               ),
               child: Transform.rotate(
-                angle: ((direction ?? 0) * (math.pi / 180) * -1),
-                child: Image.asset('assets/compass.png'),
+                angle: ((direction) * (math.pi / 180) * -1),
+                child: Image.asset('assets/compass_background.png'),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(5.0),
+              alignment: Alignment.center,
+              child: Transform.rotate(
+                angle: ((direction - brng) * (math.pi / 180) * -1),
+                child: Image.asset('assets/compass_needle.png'),
               ),
             ),
             Center(
+              heightFactor: height / 100,
               child: Text(
-                "$ang",
+                "$tot°",
                 style: const TextStyle(
-                  color: Color(0xFFEBEBEB),
-                  fontSize: 45,
+                  color: Color.fromARGB(255, 0, 255, 0),
+                  fontSize: 30,
                 ),
               ),
             ),
+
             /*
             Positioned(
               // center of the screen - half the width of the rectangle

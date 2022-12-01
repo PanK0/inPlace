@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -87,18 +88,22 @@ class ApplicationState extends ChangeNotifier {
   }
 
   // Function to calculate the nearest cluster to point A
-  double get_nearest_cluster(
+  List<double> get_nearest_cluster(
       double lat_a, double lng_a, List<ClustersList> clusters) {
     var min_distance = 12742.0;
+    var nearest_lat = 0.0;
+    var nearest_lng = 0.0;
 
     for (int i = 0; i < clusters.length; i++) {
       var dist = get_distance(lat_a, lng_a, double.parse(clusters[i].lat),
           double.parse(clusters[i].lng));
       if (dist < min_distance) {
         min_distance = dist;
+        nearest_lat = double.parse(clusters[i].lat);
+        nearest_lng = double.parse(clusters[i].lng);
       }
     }
-    return min_distance;
+    return [min_distance, nearest_lat, nearest_lng];
   }
 
   /* 
@@ -119,6 +124,9 @@ class ApplicationState extends ChangeNotifier {
   List<ClustersList> get clustersLists => _clustersLists;
   String banana = '0';
   double nearest_cluster = -1.0;
+  double nearest_lat = 0.0;
+  double nearest_lng = 0.0;
+  double theta = 0.0;
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -187,7 +195,30 @@ class ApplicationState extends ChangeNotifier {
           _clustersLists = await getClustersFromDB();
           notifyListeners();
 
-          nearest_cluster = get_nearest_cluster(lat, long, _clustersLists);
+          nearest_cluster = (get_nearest_cluster(lat, long, _clustersLists))[0];
+          nearest_lat = (get_nearest_cluster(lat, long, _clustersLists))[1];
+          nearest_lng = (get_nearest_cluster(lat, long, _clustersLists))[2];
+          /*
+          Calculate the angle between two pairs of coords
+           θ = atan2( sin Δλ ⋅ cos φ2 , cos φ1 ⋅ sin φ2 − sin φ1 ⋅ cos φ2 ⋅ cos Δλ )
+           φ and λ MUST BE IN RADIANS.
+        */
+
+          double phi1 = lat * pi / 180;
+          double lam1 = long * pi / 180;
+          double phi2 = nearest_lat * pi / 180;
+          double lam2 = nearest_lng * pi / 180;
+
+          double op1 = sin(lam2 - lam1) * cos(phi2);
+          double op2 = (cos(phi1) * sin(phi2)) -
+              (sin(phi1) * cos(phi2) * cos(lam2 - lam1));
+
+          /*
+          double op1 = sin((long - nearest_lng)) * cos(lat);
+          double op2 = (cos(nearest_lat) * sin(lat)) -
+              (sin(nearest_lat) * cos(lat) * cos(long - nearest_lng));
+          */
+          theta = atan2(op1, op2);
           notifyListeners();
         });
       } else {
