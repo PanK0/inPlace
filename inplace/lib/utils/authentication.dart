@@ -8,7 +8,12 @@ import '../widgets/widgets.dart';
 String? get_user_name() {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? userName = FirebaseAuth.instance.currentUser!.displayName;
-  return userName;
+
+  if (userName != null) {
+    return userName;
+  } else {
+    return '';
+  }
 }
 
 class AuthFunc extends StatelessWidget {

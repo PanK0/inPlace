@@ -33,8 +33,19 @@ class ClusterPage extends StatelessWidget {
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Cluster list
-                Clusters(clst: appState.clustersLists),
+                SizedBox(
+                  height: 200,
+                  child: Scrollbar(
+                      thickness: 10, //width of scrollbar
+                      radius: Radius.circular(20), //corner radius of scrollbar
+                      scrollbarOrientation: ScrollbarOrientation.right,
+                      child: ListView(
+                        children: [
+                          Clusters(clst: appState.clustersLists),
+                        ],
+                      )),
+                ),
+
                 // About you section
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   const Divider(

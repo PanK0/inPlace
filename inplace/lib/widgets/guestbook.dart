@@ -70,8 +70,31 @@ class _GuestBookState extends State<GuestBook> {
           ),
         ),
         const SizedBox(height: 8),
-        for (var message in widget.messages)
-          Paragraph('${message.name}: ${message.message}'),
+        SizedBox(
+          height: 200,
+          child: Scrollbar(
+              thickness: 10, //width of scrollbar
+              radius: Radius.circular(20), //corner radius of scrollbar
+              scrollbarOrientation: ScrollbarOrientation.right,
+              child: ListView(
+                children: [
+                  for (var message in widget.messages)
+                    Container(
+                        width: 1000,
+                        margin: const EdgeInsets.all(2),
+                        child: Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Container(
+                                margin: const EdgeInsets.all(5),
+                                child: Paragraph(
+                                  '${message.name}: ${message.message}',
+                                )))),
+                ],
+              )),
+        ),
         const SizedBox(height: 8),
       ],
     );

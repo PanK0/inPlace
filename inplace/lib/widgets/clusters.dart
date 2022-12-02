@@ -28,9 +28,19 @@ class _ClustersState extends State<Clusters> {
         const SizedBox(height: 8),
         if (widget.clst.isEmpty) const Text('No clusters available'),
         for (var clu in widget.clst)
-          Paragraph(
-            'Latitude: ${clu.lat},\nLongitude: ${clu.lng},\nAverage Radius: ${clu.avg_radius}',
-          ),
+          Container(
+              width: 1000,
+              margin: const EdgeInsets.all(2),
+              child: Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Container(
+                      margin: const EdgeInsets.all(5),
+                      child: Paragraph(
+                        'Latitude: ${clu.lat},\nLongitude: ${clu.lng},\nAverage Radius: ${clu.avg_radius}',
+                      )))),
         const SizedBox(height: 8),
       ],
     );
