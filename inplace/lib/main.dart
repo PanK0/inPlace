@@ -1,11 +1,11 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:inplace/pages/clusterPage.dart';
-import 'package:inplace/pages/homePage.dart';
-import 'package:provider/provider.dart';
+import "package:firebase_ui_auth/firebase_ui_auth.dart";
+import "package:flutter/material.dart";
+import "package:google_fonts/google_fonts.dart";
+import "package:inplace/pages/clusterPage.dart";
+import "package:inplace/pages/homePage.dart";
+import "package:provider/provider.dart";
 
-import 'utils/applicationState.dart';
+import "utils/applicationState.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,23 +22,23 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        initialRoute: '/home',
+        initialRoute: "/home",
         routes: {
           // Home Page class, pages/homePage.dart
-          '/home': (context) {
+          "/home": (context) {
             return const HomePage();
           },
           // Clusters Page class, pages/clusterPage.dart
-          '/clusters': (context) {
+          "/clusters": (context) {
             return const ClusterPage();
           },
           // sign-in screen, package:firebase_ui_auth/src/screens/sign_in_screen.dart
-          '/sign-in': ((context) {
+          "/sign-in": ((context) {
             return SignInScreen(
               actions: [
                 ForgotPasswordAction(((context, email) {
-                  Navigator.of(context).pushNamed('/forgot-password',
-                      arguments: {'email': email});
+                  Navigator.of(context).pushNamed("/forgot-password",
+                      arguments: {"email": email});
                 })),
                 AuthStateChangeAction(((context, state) {
                   if (state is SignedIn || state is UserCreated) {
@@ -49,46 +49,46 @@ class App extends StatelessWidget {
                       return;
                     }
                     if (state is UserCreated) {
-                      user.updateDisplayName(user.email!.split('@')[0]);
+                      user.updateDisplayName(user.email!.split("@")[0]);
                     }
                     if (!user.emailVerified) {
                       user.sendEmailVerification();
                       const snackBar = SnackBar(
                           content: Text(
-                              'Please check your email to verify your email address'));
+                              "Please check your email to verify your email address"));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
-                    Navigator.of(context).pushReplacementNamed('/home');
+                    Navigator.of(context).pushReplacementNamed("/home");
                   }
                 })),
               ],
             );
           }),
           // forgot-password screen, package:firebase_ui_auth/src/screens/forgot_password_screen.dart
-          '/forgot-password': ((context) {
+          "/forgot-password": ((context) {
             final arguments = ModalRoute.of(context)?.settings.arguments
                 as Map<String, dynamic>?;
 
             return ForgotPasswordScreen(
-              email: arguments?['email'] as String,
+              email: arguments?["email"] as String,
               headerMaxExtent: 200,
             );
           }),
           // profile screen, package:firebase_ui_auth/src/screens/profile_screen.dart
-          '/profile': ((context) {
+          "/profile": ((context) {
             return ProfileScreen(
               providers: [],
               actions: [
                 SignedOutAction(
                   ((context) {
-                    Navigator.of(context).pushReplacementNamed('/home');
+                    Navigator.of(context).pushReplacementNamed("/home");
                   }),
                 ),
               ],
             );
           })
         },
-        title: 'inPlace',
+        title: "inPlace",
         theme: ThemeData(
           /*
         buttonTheme: Theme.of(context).buttonTheme.copyWith(

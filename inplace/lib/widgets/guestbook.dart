@@ -1,9 +1,9 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:flutter/material.dart';
-import 'package:inplace/widgets/widgets.dart';
+import "package:flutter/material.dart";
+import "package:inplace/widgets/widgets.dart";
 
-import '../utils/guestbookMessage.dart';
+import "../utils/guestbookMessage.dart";
 
 class GuestBook extends StatefulWidget {
   const GuestBook({
@@ -19,7 +19,7 @@ class GuestBook extends StatefulWidget {
 }
 
 class _GuestBookState extends State<GuestBook> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_GuestBookState');
+  final _formKey = GlobalKey<FormState>(debugLabel: "_GuestBookState");
   final _controller = TextEditingController();
 
   @override
@@ -39,11 +39,11 @@ class _GuestBookState extends State<GuestBook> {
                   child: TextFormField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      hintText: 'Leave a message',
+                      hintText: "Leave a message",
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Enter your message to continue';
+                        return "Enter your message to continue";
                       }
                       return null;
                     },
@@ -61,7 +61,7 @@ class _GuestBookState extends State<GuestBook> {
                     children: const [
                       Icon(Icons.send),
                       SizedBox(width: 4),
-                      Text('SEND'),
+                      Text("SEND"),
                     ],
                   ),
                 ),
@@ -90,7 +90,7 @@ class _GuestBookState extends State<GuestBook> {
                             child: Container(
                                 margin: const EdgeInsets.all(5),
                                 child: Paragraph(
-                                  '${message.name}: ${message.message}',
+                                  "${message.name}: ${message.message}",
                                 )))),
                 ],
               )),

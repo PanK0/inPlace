@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
 
-import '../widgets/widgets.dart';
+import "../widgets/widgets.dart";
 
 // Used to show the user name of the current user
 // ignore: non_constant_identifier_names
@@ -12,7 +12,7 @@ String? get_user_name() {
   if (userName != null) {
     return userName;
   } else {
-    return '';
+    return "";
   }
 }
 
@@ -31,7 +31,7 @@ class AuthFunc extends StatelessWidget {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.only(left: 24, bottom: 8),
-        child: !loggedIn ? const Text('') : Header(get_user_name()!),
+        child: !loggedIn ? const Text("") : Header(get_user_name()!),
       ),
       Row(
         children: [
@@ -40,10 +40,10 @@ class AuthFunc extends StatelessWidget {
             child: StyledButton(
                 onPressed: () {
                   !loggedIn
-                      ? Navigator.of(context).pushNamed('/sign-in')
+                      ? Navigator.of(context).pushNamed("/sign-in")
                       : signOut();
                 },
-                child: !loggedIn ? const Text('RSVP') : const Text('Logout')),
+                child: !loggedIn ? const Text("RSVP") : const Text("Logout")),
           ),
           Visibility(
               visible: loggedIn,
@@ -51,18 +51,18 @@ class AuthFunc extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 24, bottom: 8),
                 child: StyledButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/profile');
+                      Navigator.of(context).pushNamed("/profile");
                     },
-                    child: const Text('Profile')),
+                    child: const Text("Profile")),
               )),
           // Clusters button
           Padding(
               padding: const EdgeInsets.only(left: 24, bottom: 8),
               child: StyledButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/clusters');
+                  Navigator.of(context).pushNamed("/clusters");
                 },
-                child: const Text('Clusters'),
+                child: const Text("Clusters"),
               )),
         ],
       )

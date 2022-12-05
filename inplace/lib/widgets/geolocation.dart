@@ -1,7 +1,7 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import "dart:async";
+import "package:flutter/material.dart";
+import "package:geolocator/geolocator.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart";
 
 class Geoloc extends StatefulWidget {
   const Geoloc({super.key});
@@ -40,9 +40,9 @@ class _GeolocState extends State<Geoloc> {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          print('Location permissions are denied');
+          print("Location permissions are denied");
         } else if (permission == LocationPermission.deniedForever) {
-          print("'Location permissions are permanently denied");
+          print("Location permissions are permanently denied");
         } else {
           haspermission = true;
         }

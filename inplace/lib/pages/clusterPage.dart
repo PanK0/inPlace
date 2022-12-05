@@ -1,17 +1,17 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
-import '../utils/authentication.dart';
-import '../widgets/appbar.dart';
-import '../widgets/clusters.dart';
-import '../utils/applicationState.dart';
-import '../widgets/widgets.dart';
+import "../utils/authentication.dart";
+import "../widgets/appbar.dart";
+import "../widgets/clusters.dart";
+import "../utils/applicationState.dart";
+import "../widgets/widgets.dart";
 
-import 'dart:math' as math;
-import 'package:flutter_compass/flutter_compass.dart';
+import "dart:math" as math;
+import "package:flutter_compass/flutter_compass.dart";
 
 class ClusterPage extends StatelessWidget {
   const ClusterPage({super.key});
@@ -24,7 +24,7 @@ class ClusterPage extends StatelessWidget {
         children: <Widget>[
           const Header("Top Clusters"),
           const Paragraph(
-            'Clusters in the world',
+            "Clusters in the world",
           ),
           const Divider(
             color: Colors.black,
@@ -60,9 +60,11 @@ class ClusterPage extends StatelessWidget {
                     "Your latitude: ${appState.lat}\nYour longitude: ${appState.long}",
                   ),
                   const SizedBox(height: 8),
+                  
                   const Header("Nearest Cluster"),
                   Paragraph(
-                      'Latitude: ${appState.nearest_lat}\nLongitude: ${appState.nearest_lng}'),
+                      "Latitude: ${appState.nearest_lat}\nLongitude: ${appState.nearest_lng}"),
+                  
                   Paragraph(
                       "Distance to the nearest cluster is ${appState.nearest_cluster.toStringAsFixed(2)}")
                 ]),
@@ -107,7 +109,7 @@ class ClusterPage extends StatelessWidget {
       stream: FlutterCompass.events,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('Error reading heading: ${snapshot.error}');
+          return Text("Error reading heading: ${snapshot.error}");
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -137,6 +139,8 @@ class ClusterPage extends StatelessWidget {
 
         return Stack(
           children: [
+
+            // Actual compass
             Container(
               padding: const EdgeInsets.all(5.0),
               alignment: Alignment.center,
@@ -146,15 +150,17 @@ class ClusterPage extends StatelessWidget {
               ),
               child: Transform.rotate(
                 angle: ((direction) * (math.pi / 180) * -1),
-                child: Image.asset('assets/compass_background.png'),
+                child: Image.asset("assets/compass_background.png"),
               ),
             ),
+
+            // Pointer to the nearest cluster
             Container(
               padding: const EdgeInsets.all(5.0),
               alignment: Alignment.center,
               child: Transform.rotate(
                 angle: ((direction - brng) * (math.pi / 180) * -1),
-                child: Image.asset('assets/compass_needle.png'),
+                child: Image.asset("assets/compass_needle.png"),
               ),
             ),
             Center(

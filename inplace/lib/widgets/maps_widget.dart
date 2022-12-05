@@ -1,7 +1,7 @@
 // THIS WIDGET IS UNUSED
 
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import "package:flutter/material.dart";
+import "package:google_maps_flutter/google_maps_flutter.dart";
 
 late GoogleMapController mapController;
 const LatLng _center = LatLng(41.890058429450804, 12.492756611335453);

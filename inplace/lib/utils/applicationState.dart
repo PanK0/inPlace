@@ -1,21 +1,21 @@
-import 'dart:convert';
-import 'dart:math';
+import "dart:convert";
+import "dart:math";
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
 
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart'
+import "dart:async";
+import "package:firebase_auth/firebase_auth.dart"
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:geolocator/geolocator.dart';
+import "package:firebase_core/firebase_core.dart";
+import "package:firebase_ui_auth/firebase_ui_auth.dart";
+import "package:geolocator/geolocator.dart";
 
-import '../firebase_options.dart';
-import 'guestbookMessage.dart';
+import "../firebase_options.dart";
+import "guestbookMessage.dart";
 
-import 'clustersList.dart';
-import '../services/clustering_server_api.dart';
+import "clustersList.dart";
+import "../services/clustering_server_api.dart";
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
@@ -42,9 +42,9 @@ class ApplicationState extends ChangeNotifier {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        print('Location permissions are denied');
+        print("Location permissions are denied");
       } else if (permission == LocationPermission.deniedForever) {
-        print("'Location permissions are permanently denied");
+        print("Location permissions are permanently denied");
       } else {
         print("GPS Location service is granted");
       }
@@ -122,7 +122,7 @@ class ApplicationState extends ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _clustersSubscription;
   List<ClustersList> _clustersLists = [];
   List<ClustersList> get clustersLists => _clustersLists;
-  String banana = '0';
+  String banana = "0";
   double nearest_cluster = -1.0;
   double nearest_lat = 0.0;
   double nearest_lng = 0.0;
@@ -150,17 +150,17 @@ class ApplicationState extends ChangeNotifier {
         */
         /*
         _clustersSubscription = FirebaseFirestore.instance
-            .collection('clusters')
-            .orderBy('timestamp', descending: true)
+            .collection("clusters")
+            .orderBy("timestamp", descending: true)
             .snapshots()
             .listen((snaps) async {
           _clustersLists = [];
           for (final document in snaps.docs) {
             var cl = ClustersList(
-                lat: (document.data()['geotag'].latitude).toString(),
-                lng: (document.data()['geotag'].longitude).toString(),
-                avg_radius: (document.data()['avg_radius']).toString());
-            //banana = document.data()['avg_radius'].toString();
+                lat: (document.data()["geotag"].latitude).toString(),
+                lng: (document.data()["geotag"].longitude).toString(),
+                avg_radius: (document.data()["avg_radius"]).toString());
+            //banana = document.data()["avg_radius"].toString();
             _clustersLists.add(cl);
           }
           notifyListeners();
@@ -170,20 +170,20 @@ class ApplicationState extends ChangeNotifier {
           Retrieve the messages
         */
         _guestBookSubscription = FirebaseFirestore.instance
-            .collection('guestbook')
-            .orderBy('timestamp', descending: true)
+            .collection("guestbook")
+            .orderBy("timestamp", descending: true)
             .snapshots()
             .listen((snapshot) async {
           _guestBookMessages = [];
           await getGPSCoordinates();
           for (final document in snapshot.docs) {
             // Here we only show the messages in a fixed range of distance
-            bool pass = checkCoords(document.data()['geotag']);
+            bool pass = checkCoords(document.data()["geotag"]);
             if (pass) {
               _guestBookMessages.add(
                 GuestBookMessage(
-                  name: document.data()['name'] as String,
-                  message: document.data()['text'] as String,
+                  name: document.data()["name"] as String,
+                  message: document.data()["text"] as String,
                 ),
               );
             }
@@ -234,7 +234,7 @@ class ApplicationState extends ChangeNotifier {
 
   Future<DocumentReference> addMessageToGuestBook(String message) async {
     if (!_loggedIn) {
-      throw Exception('Must be logged in');
+      throw Exception("Must be logged in");
     }
 
     if (lat == 0 || long == 0) {
@@ -242,13 +242,13 @@ class ApplicationState extends ChangeNotifier {
     }
 
     return FirebaseFirestore.instance
-        .collection('guestbook')
+        .collection("guestbook")
         .add(<String, dynamic>{
-      'text': message,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-      'name': FirebaseAuth.instance.currentUser!.displayName,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
-      'geotag': GeoPoint(lat,
+      "text": message,
+      "timestamp": DateTime.now().millisecondsSinceEpoch,
+      "name": FirebaseAuth.instance.currentUser!.displayName,
+      "userId": FirebaseAuth.instance.currentUser!.uid,
+      "geotag": GeoPoint(lat,
           long), // Save a GeoPoint. To access coordinates call i.e. geopoint.latitude, geopoint.longitude
     });
   }
