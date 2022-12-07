@@ -46,6 +46,7 @@ dependencies:
   google_maps_flutter_web: ^0.4.0+2
   geolocator: ^9.0.2
   flutter_compass: ^0.7.0
+  loading_animations: ^2.2.0
 
 dev_dependencies:
   flutter_test:

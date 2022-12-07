@@ -75,7 +75,9 @@ class ClusterPage extends StatelessWidget {
                   endIndent: 8,
                   color: Colors.grey,
                 ),
-                const Header("Jack's Compass"),
+                const Header("Cluster Compass"),
+                const Paragraph(
+                    "This compass points to the north and to the nearest cluster"),
                 Container(
                   margin: const EdgeInsets.all(50.0),
                   child: _buildCompass(context, appState.theta),
